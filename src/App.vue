@@ -1,12 +1,18 @@
 <template>
   <Formik :initial-values="initialValues" :validate="validate" @submit="handleSubmit">
-    <Field name="email" />
-    <Field name="password" type="password" />
-    <Field name="color" as="select">
-      <option value="red">Red</option>
-      <option value="green">Green</option>
-      <option value="blue">Blue</option>
-    </Field>
+    <template #default="{ handleSubmit }">
+      <form @submit="handleSubmit">
+        <Field name="email" />
+        <Field name="password" type="password" />
+        <Field name="color" as="select">
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+        </Field>
+        <button>Submit</button>
+      </form>
+    </template>
+    
   </Formik>
 </template>
 
@@ -23,7 +29,7 @@ export default {
   data() {
     return {
       initialValues: {
-        email: '',
+        email: 'toto@gmail.com',
         password: '',
         color: 'red',
       }
@@ -31,7 +37,6 @@ export default {
   },
   methods: {
     validate(values) {
-      console.log(values)
       const errors = {};
 
       if (!values.email) {
@@ -47,7 +52,7 @@ export default {
       }
       return errors;
     },
-    handleSubmit(values, setIsSubmitting) {
+    handleSubmit(values, setIsSubmitting, event) {
       console.log('Form submitted', values)
       setTimeout(() => {
         setIsSubmitting(false);

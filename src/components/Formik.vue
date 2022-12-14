@@ -1,5 +1,7 @@
 <template>
-  <form class="Formik" @submit.prevent="handleSubmit">
+  <slot v-bind:handleSubmit="handleSubmit">
+  </slot>
+  <!-- <form class="Formik" @submit.prevent="handleSubmit">
     <h1>Formik</h1>
     <pre>
       Form: {{ JSON.stringify(form) }}
@@ -15,10 +17,12 @@
       </div>
       <button type="submit" :disabled="isSubmitting">Submit</button>
     </slot>
-  </form>
+  </form> -->
 </template>
 
 <script lang="ts">
+import { computed } from '@vue/reactivity'
+
 const isEmpty = (obj: Object) => Object.keys(obj).length === 0
 
 export default {
@@ -52,16 +56,23 @@ export default {
     setIsSubmitting(isSubmitting) {
       this.isSubmitting = isSubmitting
     },
-    handleSubmit() {
+    handleSubmit(event) {
+      event.preventDefault();
+
       const values = { ...this.form }
       this.errors = this.validate(values)
 
       if (isEmpty(this.errors)) {
-        this.$emit('submit', values, this.setIsSubmitting)
+        this.$emit('submit', values, this.setIsSubmitting, event)
 
         this.isSubmitting = true;
       }
     },
+  },
+  provide() {
+    return {
+      getForm: () => this.form,
+    }
   },
   created() {
     this.form = { ...this.initialValues };
