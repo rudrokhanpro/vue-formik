@@ -1,20 +1,31 @@
 <template>
-  <Formik :initial-values="initialValues" :validate="validate" @submit="handleSubmit" />
+  <Formik :initial-values="initialValues" :validate="validate" @submit="handleSubmit">
+    <Field name="email" />
+    <Field name="password" type="password" />
+    <Field name="color" as="select">
+      <option value="red">Red</option>
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+    </Field>
+  </Formik>
 </template>
 
 <script lang="ts">
 import Formik from "./components/Formik.vue"
+import Field from "./components/Field.vue"
 
 export default {
   name: 'App',
   components: {
     Formik,
+    Field,
   },
   data() {
     return {
       initialValues: {
         email: '',
         password: '',
+        color: 'red',
       }
     }
   },

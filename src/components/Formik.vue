@@ -6,13 +6,15 @@
       Errors: {{ JSON.stringify(errors) }}
       Is submitting: {{ isSubmitting }}
     </pre>
-    <div v-for="field in fields">
-      <input type="text" v-model="form[field]" :placeholder="field">
-      <p v-if="errors[field]">
-        {{ errors[field] }}
-      </p>
-    </div>
-    <button type="submit" :disabled="isSubmitting">Submit</button>
+    <slot v-bind:handleSubmit="handleSubmit">
+      <div v-for="field in fields">
+        <input type="text" v-model="form[field]" :placeholder="field">
+        <p v-if="errors[field]">
+          {{ errors[field] }}
+        </p>
+      </div>
+      <button type="submit" :disabled="isSubmitting">Submit</button>
+    </slot>
   </form>
 </template>
 
